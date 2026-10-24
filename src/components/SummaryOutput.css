@@ -4,9 +4,33 @@
   border: 1px solid var(--border);
 }
 
+.summary-output__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
 .summary-output__title {
-  margin: 0 0 12px;
+  margin: 0;
   font-size: 20px;
+}
+
+.summary-output__copy {
+  font: inherit;
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 2px solid var(--accent-border);
+  background: var(--accent-bg);
+  color: var(--text-h);
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.summary-output__copy:hover {
+  border-color: var(--accent);
 }
 
 /* Keeps the "\n" line breaks from the model instead of merging lines together */

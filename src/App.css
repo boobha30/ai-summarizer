@@ -8,8 +8,29 @@
   gap: 24px;
 }
 
+/* Summarize and History buttons side by side */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.history-button {
+  font-size: 16px;
+  padding: 10px 24px;
+  border-radius: 6px;
+  color: var(--text-h);
+  background: var(--bg);
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.history-button:hover {
+  border-color: var(--accent-border);
+}
+
 .summarize-button {
-  align-self: center;
   font-size: 16px;
   padding: 10px 24px;
   border-radius: 6px;

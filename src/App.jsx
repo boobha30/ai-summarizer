@@ -5,6 +5,7 @@ import LengthSelector from './components/LengthSelector.jsx'
 import ErrorMessage from './components/ErrorMessage.jsx'
 import SummaryOutput from './components/SummaryOutput.jsx'
 import HistoryPanel from './components/HistoryPanel.jsx'
+import useHistory from './hooks/useHistory.js'
 import './App.css'
 
 // Text must be at least this long before the AI can produce a useful summary
@@ -16,6 +17,8 @@ function App() {
   const [summary, setSummary] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false)
+  const { history, addEntry, clearHistory } = useHistory()
 
   const isTooShort = text.length < MIN_TEXT_LENGTH
 
@@ -48,6 +51,7 @@ function App() {
       }
 
       setSummary(data.summary)
+      addEntry({ text, length, summary: data.summary })
     } catch {
       // fetch only throws when the request never reaches the server
       setError('Could not reach the server. Check your connection and try again.')
@@ -57,22 +61,45 @@ function App() {
     }
   }
 
+  // Show a saved summary again; clear any error so it doesn't sit next to it
+  function handleSelectHistory(entry) {
+    setError('')
+    setSummary(entry.summary)
+  }
+
   return (
     <main className="app">
       <Intro />
       <InputBox text={text} onTextChange={setText} />
       <LengthSelector length={length} onLengthChange={setLength} />
-      <button
-        type="button"
-        className="summarize-button"
-        disabled={isTooShort || isLoading}
-        onClick={handleSummarize}
-      >
-        {isLoading ? 'Summarizing…' : 'Summarize'}
-      </button>
+      <div className="actions">
+        <button
+          type="button"
+          className="summarize-button"
+          disabled={isTooShort || isLoading}
+          onClick={handleSummarize}
+        >
+          {isLoading ? 'Summarizing…' : 'Summarize'}
+        </button>
+        <button
+          type="button"
+          className="history-button"
+          // Lets screen readers know whether the panel is currently open
+          aria-expanded={isHistoryOpen}
+          onClick={() => setIsHistoryOpen(!isHistoryOpen)}
+        >
+          {isHistoryOpen ? 'Hide history' : 'History'}
+        </button>
+      </div>
       <ErrorMessage message={error} />
       <SummaryOutput summary={summary} />
-      <HistoryPanel />
+      {isHistoryOpen && (
+        <HistoryPanel
+          history={history}
+          onSelect={handleSelectHistory}
+          onClear={clearHistory}
+        />
+      )}
     </main>
   )
 }

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import './SummaryOutput.css'
 
 // Matches lines that start with "* " or "- " (the model's way of writing bullets)
@@ -35,16 +36,58 @@ function splitIntoBlocks(summary) {
 }
 
 function SummaryOutput({ summary }) {
-  // Nothing to show until a summary arrives
+  // 'idle' shows "Copy", 'copied' shows "Copied ✓", 'failed' shows an error label
+  const [copyStatus, setCopyStatus] = useState('idle')
+
+  // After a copy (or failed copy), switch the label back after 2 seconds.
+  // The cleanup cancels the timer if the component disappears first.
+  useEffect(() => {
+    if (copyStatus === 'idle') {
+      return
+    }
+    const timer = setTimeout(() => setCopyStatus('idle'), 2000)
+    return () => clearTimeout(timer)
+  }, [copyStatus])
+
+  async function handleCopy() {
+    // Swap "* " / "- " markers for "•" so the pasted text looks like a real list
+    const cleanText = summary
+      .split('\n')
+      .map((line) => {
+        const trimmed = line.trim()
+        return BULLET_PATTERN.test(trimmed) ? trimmed.replace(BULLET_PATTERN, '• ') : line
+      })
+      .join('\n')
+
+    try {
+      await navigator.clipboard.writeText(cleanText)
+      setCopyStatus('copied')
+    } catch {
+      // The clipboard can be blocked (e.g. permissions or a non-https page)
+      setCopyStatus('failed')
+    }
+  }
+
+  // Nothing to show until a summary arrives. This check comes after the hooks
+  // because React needs hooks to run in the same order on every render.
   if (!summary) {
     return null
   }
 
   const blocks = splitIntoBlocks(summary)
 
+  let copyLabel = 'Copy'
+  if (copyStatus === 'copied') copyLabel = 'Copied ✓'
+  if (copyStatus === 'failed') copyLabel = "Couldn't copy"
+
   return (
     <section className="summary-output">
-      <h2 className="summary-output__title">Summary</h2>
+      <div className="summary-output__header">
+        <h2 className="summary-output__title">Summary</h2>
+        <button type="button" className="summary-output__copy" onClick={handleCopy}>
+          {copyLabel}
+        </button>
+      </div>
       {blocks.map((block, index) =>
         block.type === 'list' ? (
           <ul key={index} className="summary-output__list">
