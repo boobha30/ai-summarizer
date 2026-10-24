@@ -8,11 +8,17 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
 
 const MIN_TEXT_LENGTH = 100
 
-// Turns the "Short" / "Medium" / "Detailed" choice into an instruction for the model
+// Added to every instruction so the frontend gets clean text it can display
+// as-is, and the summary is written in new words instead of copied
+const PLAIN_TEXT_RULE =
+  'Use plain text only. No bold, italics or headings. Never repeat the original sentences.'
+
+// Turns the "Short" / "Medium" / "Detailed" choice into an instruction for the model.
+// Each limit is a share of the original length so the summary is always much shorter.
 const LENGTH_INSTRUCTIONS = {
-  short: 'Summarize the text in 2-3 short bullet points, under 50 words total.',
-  medium: 'Summarize the text in a single paragraph of about 120 words.',
-  detailed: 'Summarize the text in 5-8 bullet points covering the main ideas.',
+  short: `Summarize the text in exactly 3 bullet points, each under 12 words, under 30 words total and at most 15% of the original length. ${PLAIN_TEXT_RULE}`,
+  medium: `Summarize the text in one paragraph, at most 30% of the original length and no more than 120 words. ${PLAIN_TEXT_RULE}`,
+  detailed: `Summarize the text in 4-8 bullet points, at most 50% of the original length. ${PLAIN_TEXT_RULE}`,
 }
 
 export default async function handler(req, res) {
