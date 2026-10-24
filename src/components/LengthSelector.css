@@ -1,2 +1,26 @@
 .length-selector {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.length-selector__button {
+  font: inherit;
+  font-size: 15px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  color: var(--text-h);
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.length-selector__button:hover {
+  border-color: var(--accent-border);
+}
+
+.length-selector__button--active {
+  border-color: var(--accent);
+  background: var(--accent-bg);
 }

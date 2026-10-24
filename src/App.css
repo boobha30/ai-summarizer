@@ -7,3 +7,24 @@
   flex-direction: column;
   gap: 24px;
 }
+
+.summarize-button {
+  align-self: center;
+  font-size: 16px;
+  padding: 10px 24px;
+  border-radius: 6px;
+  color: var(--text-h);
+  background: var(--accent-bg);
+  border: 2px solid var(--accent-border);
+  cursor: pointer;
+  transition: border-color 0.3s, opacity 0.3s;
+}
+
+.summarize-button:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.summarize-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -1,2 +1,23 @@
 .input-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-box__textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-h);
+  resize: vertical;
+}
+
+.input-box__count {
+  margin-top: 6px;
+  font-size: 14px;
+  color: var(--text);
+  text-align: right;
 }
