@@ -1,0 +1,33 @@
+.intro {
+  text-align: center;
+}
+
+.intro .tagline {
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.intro .steps {
+  text-align: left;
+  max-width: 420px;
+  margin: 0 auto 24px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.intro .start-button {
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 6px;
+  color: var(--text-h);
+  background: var(--accent-bg);
+  border: 2px solid var(--accent-border);
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.intro .start-button:hover {
+  border-color: var(--accent);
+}
