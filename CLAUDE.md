@@ -5,7 +5,7 @@ Guidance for Claude Code when working in this repository.
 ## What this project is
 
 A small AI text summarizer web app. The user pastes text, the app sends it to
-a serverless function, which calls the Claude API and returns a summary. This
+a serverless function, which calls the Google Gemini API and returns a summary. This
 is a learning project — code should stay simple and easy to follow over being
 clever or highly abstracted.
 
@@ -17,8 +17,8 @@ clever or highly abstracted.
   (no MUI, no Chakra, no shadcn, etc.). Every visual thing is hand-written
   CSS.
 - **One Vercel serverless function**: `api/summarize.js`. This is the only
-  backend code. It receives text from the frontend, calls the Claude API
-  server-side (so the API key never reaches the browser), and returns the
+  backend code. It receives text from the frontend, calls the Gemini API
+  (via the official `@google/genai` package) server-side (so the API key never reaches the browser), and returns the
   summary as JSON.
 - `eslint` is configured (`npm run lint`) — run it after changes to JS/JSX.
 
@@ -55,8 +55,8 @@ clever or highly abstracted.
 
 ## API key / secrets
 
-- The Claude API key must only be read in `api/summarize.js` via an
-  environment variable (e.g. `process.env.ANTHROPIC_API_KEY`), never
+- The Gemini API key must only be read in `api/summarize.js` via an
+  environment variable (`process.env.GEMINI_API_KEY`), never
   hardcoded and never exposed to frontend code.
 - Don't commit `.env` files; they're covered by `.gitignore`.
 
