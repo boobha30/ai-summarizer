@@ -7,9 +7,13 @@
   margin-bottom: 20px;
 }
 
+/* fit-content shrinks the list to its longest line, so margin auto centers the
+   list itself while each line stays left-aligned and the numbers line up */
 .intro .steps {
   text-align: left;
-  max-width: 420px;
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
   margin: 0 auto 24px;
   padding-left: 20px;
   display: flex;

@@ -1,6 +1,9 @@
 /* Simple centered column layout for the app */
 .app {
-  max-width: 640px;
+  /* 640px of content + 2 × 20px side padding. border-box keeps the padding
+     inside this width, so the page never gets wider than the screen */
+  max-width: 680px;
+  box-sizing: border-box;
   margin: 0 auto;
   padding: 32px 20px;
   display: flex;
@@ -11,6 +14,8 @@
 /* Summarize and History buttons side by side */
 .actions {
   display: flex;
+  /* "Summarizing…" + "Hide history" can be too wide for a phone, so allow wrapping */
+  flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
 }

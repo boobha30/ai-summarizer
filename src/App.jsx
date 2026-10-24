@@ -6,6 +6,7 @@ import ErrorMessage from './components/ErrorMessage.jsx'
 import SummaryOutput from './components/SummaryOutput.jsx'
 import HistoryPanel from './components/HistoryPanel.jsx'
 import useHistory from './hooks/useHistory.js'
+import countWords from './utils/countWords.js'
 import './App.css'
 
 // Text must be at least this long before the AI can produce a useful summary
@@ -15,6 +16,8 @@ function App() {
   const [text, setText] = useState('')
   const [length, setLength] = useState('Medium')
   const [summary, setSummary] = useState('')
+  // Word count of the text that produced the current summary (for the stat line)
+  const [originalWordCount, setOriginalWordCount] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [isHistoryOpen, setIsHistoryOpen] = useState(false)
@@ -51,6 +54,7 @@ function App() {
       }
 
       setSummary(data.summary)
+      setOriginalWordCount(countWords(text))
       addEntry({ text, length, summary: data.summary })
     } catch {
       // fetch only throws when the request never reaches the server
@@ -65,6 +69,8 @@ function App() {
   function handleSelectHistory(entry) {
     setError('')
     setSummary(entry.summary)
+    // Entries saved before word counts were added don't have one; the stat is then hidden
+    setOriginalWordCount(entry.originalWordCount ?? null)
   }
 
   return (
@@ -92,7 +98,7 @@ function App() {
         </button>
       </div>
       <ErrorMessage message={error} />
-      <SummaryOutput summary={summary} />
+      <SummaryOutput summary={summary} originalWordCount={originalWordCount} />
       {isHistoryOpen && (
         <HistoryPanel
           history={history}

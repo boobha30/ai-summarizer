@@ -32,6 +32,8 @@ clever or highly abstracted.
 - Don't put multiple components in one file, and don't share one CSS file
   across multiple components. Shared styles (CSS variables, resets, global
   layout) belong in `src/index.css`, not in a component's own CSS file.
+- Custom hooks live in `src/hooks/`, one hook per file named after it (e.g. `useHistory.js`).
+- Small plain-JS helpers shared by several files live in `src/utils/`, one function per file (e.g. `countWords.js`).
 - `App.jsx` composes components; it shouldn't itself grow into a large
   component — pull pieces out into `src/components/` instead.
 - Keep the serverless function at `api/summarize.js` — don't split it into

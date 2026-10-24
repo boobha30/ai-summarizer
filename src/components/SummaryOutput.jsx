@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import countWords from '../utils/countWords.js'
 import './SummaryOutput.css'
 
 // Matches lines that start with "* " or "- " (the model's way of writing bullets)
@@ -35,7 +36,14 @@ function splitIntoBlocks(summary) {
   return blocks.filter((block) => block.type !== 'break')
 }
 
-function SummaryOutput({ summary }) {
+// Builds a line like "170 words → 45 words (74% shorter)"
+function formatStats(originalWords, summaryWords) {
+  const percentShorter = Math.round((1 - summaryWords / originalWords) * 100)
+  const change = percentShorter > 0 ? `${percentShorter}% shorter` : 'not shorter'
+  return `${originalWords} words → ${summaryWords} words (${change})`
+}
+
+function SummaryOutput({ summary, originalWordCount }) {
   // 'idle' shows "Copy", 'copied' shows "Copied ✓", 'failed' shows an error label
   const [copyStatus, setCopyStatus] = useState('idle')
 
@@ -101,6 +109,12 @@ function SummaryOutput({ summary }) {
             {block.lines.join('\n')}
           </p>
         ),
+      )}
+      {/* Only shown when we know the original length (and it isn't 0, to avoid dividing by 0) */}
+      {originalWordCount > 0 && (
+        <p className="summary-output__stats">
+          {formatStats(originalWordCount, countWords(summary))}
+        </p>
       )}
     </section>
   )

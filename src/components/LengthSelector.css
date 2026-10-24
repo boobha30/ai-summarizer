@@ -1,5 +1,7 @@
 .length-selector {
   display: flex;
+  /* Lets the buttons drop onto a new line on very narrow screens */
+  flex-wrap: wrap;
   gap: 8px;
   justify-content: center;
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import countWords from '../utils/countWords.js'
 
 const STORAGE_KEY = 'summary-history'
 const MAX_ENTRIES = 20
@@ -41,6 +42,9 @@ function useHistory() {
         trimmed.length > PREVIEW_LENGTH ? `${trimmed.slice(0, PREVIEW_LENGTH)}…` : trimmed,
       length,
       summary,
+      // Saved so the "170 words → 45 words" stat still works for old summaries,
+      // since only a short preview of the original text is stored
+      originalWordCount: countWords(text),
       createdAt,
     }
 

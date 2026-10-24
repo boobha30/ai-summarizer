@@ -6,6 +6,7 @@
 
 .summary-output__header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
@@ -53,4 +54,12 @@
 .summary-output__text:last-child,
 .summary-output__list:last-child {
   margin-bottom: 0;
+}
+
+.summary-output__stats {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text);
 }
